@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 using static UnityEngine.RuleTile.TilingRuleOutput;
+using Unity.Cinemachine;
+using UnityEngine.VFX;
 
 public class CharacterController2D : MonoBehaviour
 {
@@ -34,10 +36,15 @@ public class CharacterController2D : MonoBehaviour
 
     public bool isAlt = false;
 
+    public CinemachineCamera cam1;
+    public CinemachineCamera cam2;
+
+    public Vector3 spawn;
+
     private void Awake()
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
-        //transform.position = new Vector3();
+        spawn = transform.position;
         
 
         if (OnLandEvent == null)
@@ -67,6 +74,14 @@ public class CharacterController2D : MonoBehaviour
     }
 
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+     if (other.tag == "spike")
+        {
+            transform.position = spawn;
+        }   
+    }
+
     public void Move(float move, bool crouch, bool jump, float shoes)
     {
         Vector3 pos = transform.position;
@@ -89,15 +104,17 @@ public class CharacterController2D : MonoBehaviour
 
             if (shoes == 1 && !isAlt)
         {
-            pos.y = transform.position.y + 38;
+            pos.y = transform.position.y + 36;
             transform.position = pos;
                 isAlt = true;
-        } else if (shoes == -1 && isAlt)
+                CameraManager.SwitchCamera(cam2);
+            } else if (shoes == -1 && isAlt)
         {
-            pos.y = transform.position.y - 36;
+            pos.y = transform.position.y - 34;
             transform.position = pos;
                 isAlt = false;
-        }
+                CameraManager.SwitchCamera(cam1);
+            }
             // If crouching
             if (crouch)
             {

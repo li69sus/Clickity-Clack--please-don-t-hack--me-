@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class playerMovement : MonoBehaviour
@@ -13,6 +14,8 @@ public class playerMovement : MonoBehaviour
     bool crouch = false;
     float shoes = 0;
     bool even = true;
+    //public CinemachineCamera cam1;
+    //public CinemachineCamera cam2;
 
     void Update()
     {
@@ -40,11 +43,13 @@ public class playerMovement : MonoBehaviour
             {
                 shoes += 1;
                 even = false;
+                //CameraManager.SwitchCamera(cam2);
             }
             else if (!even)
             {
                 shoes -= 1;
                 even = true;
+                //CameraManager.SwitchCamera(cam1);
             }
         } else if (Input.GetButtonUp("Shoes"))
         {
