@@ -119,7 +119,7 @@ public class CharacterController2D : MonoBehaviour
 
             if (shoes == 1 && !isAlt)
         {
-            pos.y = transform.position.y + 36;
+            pos.y = transform.position.y + 34;
             transform.position = pos;
                 isAlt = true;
                 CameraManager.SwitchCamera(cam2);
