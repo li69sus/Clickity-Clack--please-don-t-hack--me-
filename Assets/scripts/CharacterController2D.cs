@@ -79,12 +79,22 @@ public class CharacterController2D : MonoBehaviour
      if (other.tag == "spike")
         {
             transform.position = spawn;
-        }// else if (other.tag == "scammed")
-        //{
-            // menu saying you died and something about cyber security
-            //transform.position = spawn;
-            //CameraManager.SwitchCamera(cam1);
-        //}
+        } else if (other.tag == "scammed")
+        {
+            //menu saying you died and something about cyber security
+            transform.position = spawn;
+            CameraManager.SwitchCamera(cam1);
+            isAlt = false;
+            
+        } else if (other.tag == "Lava")
+        {
+            transform.position = spawn;
+            if (isAlt)
+            {
+                CameraManager.SwitchCamera(cam1);
+                isAlt = false;
+            }
+        }
     }
 
     public void Move(float move, bool crouch, bool jump, float shoes)
