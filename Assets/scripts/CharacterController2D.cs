@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UIElements;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class CharacterController2D : MonoBehaviour
 {
@@ -8,8 +10,8 @@ public class CharacterController2D : MonoBehaviour
     [Range(0, .3f)][SerializeField] private float m_MovementSmoothing = .05f;   // How much to smooth out the movement
     [SerializeField] private bool m_AirControl = false;                         // Whether or not a player can steer while jumping;
     [SerializeField] private LayerMask m_WhatIsGround;                          // A mask determining what is ground to the character
-    [SerializeField] private Transform m_GroundCheck;                           // A position marking where to check if the player is grounded.
-    [SerializeField] private Transform m_CeilingCheck;                          // A position marking where to check for ceilings
+    [SerializeField] private UnityEngine.Transform m_GroundCheck;                           // A position marking where to check if the player is grounded.
+    [SerializeField] private UnityEngine.Transform m_CeilingCheck;                          // A position marking where to check for ceilings
     [SerializeField] private Collider2D m_CrouchDisableCollider;                // A collider that will be disabled when crouching
 
     const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
@@ -30,9 +32,13 @@ public class CharacterController2D : MonoBehaviour
     public BoolEvent OnCrouchEvent;
     private bool m_wasCrouching = false;
 
+    public bool isAlt = false;
+
     private void Awake()
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
+        //transform.position = new Vector3();
+        
 
         if (OnLandEvent == null)
             OnLandEvent = new UnityEvent();
@@ -61,8 +67,12 @@ public class CharacterController2D : MonoBehaviour
     }
 
 
-    public void Move(float move, bool crouch, bool jump)
+    public void Move(float move, bool crouch, bool jump, float shoes)
     {
+        Vector3 pos = transform.position;
+
+        
+
         // If crouching, check to see if the character can stand up
         if (!crouch)
         {
@@ -77,6 +87,17 @@ public class CharacterController2D : MonoBehaviour
         if (m_Grounded || m_AirControl)
         {
 
+            if (shoes == 1 && !isAlt)
+        {
+            pos.y = transform.position.y + 38;
+            transform.position = pos;
+                isAlt = true;
+        } else if (shoes == -1 && isAlt)
+        {
+            pos.y = transform.position.y - 36;
+            transform.position = pos;
+                isAlt = false;
+        }
             // If crouching
             if (crouch)
             {
